@@ -16,6 +16,6 @@ namespace SisEUs.Domain.ContextoDeUsuario.Interfaces
         Task<IEnumerable<Usuario>> ObterPorCpfsAsync(IEnumerable<string> cpfs, CancellationToken cancellationToken = default);
         Task<IEnumerable<Usuario>> BuscarPorNomeProfessorAsync(string nome, CancellationToken cancellationToken = default);
         Task<IEnumerable<Usuario>> ObterTodosUsuariosAsync();
-        Task<Usuario?> ObterPorUserIdentifierAsync(Guid userIdentifier, CancellationToken cancellationToken = default);
+       Task<Usuario?> ObterPorUserIdentifierAsync(Guid userIdentifier, CancellationToken cancellationToken = default);
     }
 }

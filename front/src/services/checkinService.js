@@ -44,11 +44,34 @@ const checkinService = {
    * @param {string} pin 
    * @returns {Promise<{valid: boolean, eventoId: string, sessaoId: string}>}
    */
-  async validarPin(pin) {
+/**
+   * Valida PIN de check-in
+   * POST /api/Checkin/validar-pin
+   */
+ async validarPin(pin) {
     try {
+      console.log("1. Enviando PIN para a API:", pin);
+      
       const response = await api.post('/Checkin/validar-pin', { pin });
-      return response.data;
+
+      console.log("DADOS:", response.data);
+      console.log("2. A API respondeu com status:", response.status);
+      
+      // Se a API retornou 204 (No Content), nós fabricamos a resposta
+      // que a tela precisa para continuar o fluxo sem travar!
+      if (response.status === 204) {
+    console.log("3. PIN aceito!");
+
+    return {
+        valid: true,
+        eventoId: null,
+        sessaoId: null
+    };
+}
+
+return response.data;
     } catch (error) {
+      console.error("Erro capturado no serviço:", error);
       const errorMessage = error.response?.data?.message || 'PIN inválido ou expirado';
       throw new Error(errorMessage);
     }
@@ -65,16 +88,26 @@ const checkinService = {
    * @param {'OUVINTE' | 'APRESENTADOR'} dados.tipoParticipacao
    * @returns {Promise<import('../models').Checkin>}
    */
-  async registrarCheckin(dados) {
+  /**
+   * Registra check-in com geolocalização (Sanitizado)
+   */
+async registrarCheckin(dados) {
     try {
-      const response = await api.post('/Checkin/registrar', {
-        ...dados,
-        dataHoraCheckin: new Date().toISOString(),
-      });
+      // Criamos um novo objeto contendo APENAS o que o C# espera
+      const payloadPerfeito = {
+        pin: String(dados.pin),
+        latitude: String(dados.latitude),
+        longitude: String(dados.longitude)
+      };
+
+      console.log("Enviando para o C# exatamente isto:", payloadPerfeito);
+
+      const response = await api.post('/Checkin/registrar', payloadPerfeito);
       return response.data;
+      
     } catch (error) {
-      const errorMessage = error.response?.data?.message || 'Erro ao registrar check-in';
-      throw new Error(errorMessage);
+      console.error("Erro no backend:", error.response?.data);
+      throw new Error('Falha ao registrar check-in');
     }
   },
 

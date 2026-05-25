@@ -9,7 +9,7 @@ export const useCheckInFlow = () => {
 
     const clearError = () => setError(null);
 
-    const validarPin = async (inputPin) => {
+    const validarPin = async (inputPin, tipo = 'checkin') => {
         if (inputPin.length !== 6) {
             setError("O código deve ter 6 dígitos.");
             return;
@@ -19,15 +19,23 @@ export const useCheckInFlow = () => {
         setError(null);
         
         try {
-            
-            await CheckinService.validarPin(inputPin); // CORRIGIDO
-            
-            localStorage.setItem('currentPin', inputPin); 
-            
-            navigate('/checkin/geolocation'); 
+            const resultado = await CheckinService.validarPin(inputPin);
+
+            localStorage.setItem('currentPin', inputPin);
+            localStorage.setItem('pinValidado', inputPin);
+
+            if (resultado?.eventoId) {
+                localStorage.setItem('eventoId', resultado.eventoId);
+            }
+
+            if (resultado?.sessaoId) {
+                localStorage.setItem('sessaoId', resultado.sessaoId);
+            }
+
+            navigate(`/presenca/${tipo}/geolocation`);
             
         } catch (err) {
-            const apiError = err || "Código de Check-in inválido ou expirado.";
+            const apiError = err.message || "Código de Check-in inválido ou expirado.";
             setError(apiError);
         } finally {
             setLoading(false);

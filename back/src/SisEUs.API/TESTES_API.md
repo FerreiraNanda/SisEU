@@ -1,39 +1,39 @@
 # ?? SisEUs API - Guia de Testes Manuais
 
-Este documento contém todos os endpoints da API com exemplos para teste manual.
+Este documento contï¿½m todos os endpoints da API com exemplos para teste manual.
 
-## ?? Índice
+## ?? ï¿½ndice
 
-- [Configuração Inicial](#configuração-inicial)
-- [Autenticação](#-autenticação)
+- [Configuraï¿½ï¿½o Inicial](#configuraï¿½ï¿½o-inicial)
+- [Autenticaï¿½ï¿½o](#-autenticaï¿½ï¿½o)
 - [Eventos](#-eventos)
-- [Apresentações](#-apresentações)
-- [Presenças](#-presenças)
+- [Apresentaï¿½ï¿½es](#-apresentaï¿½ï¿½es)
+- [Presenï¿½as](#-presenï¿½as)
 - [Check-in Global](#-check-in-global-por-pin)
-- [Avaliações](#-avaliações)
-- [Dados de Referência](#-dados-de-referência)
+- [Avaliaï¿½ï¿½es](#-avaliaï¿½ï¿½es)
+- [Dados de Referï¿½ncia](#-dados-de-referï¿½ncia)
 
 ---
 
-## Configuração Inicial
+## Configuraï¿½ï¿½o Inicial
 
 ### URL Base
 ```
 https://localhost:7102/api
 ```
 
-### Variáveis
+### Variï¿½veis
 ```bash
-# Defina o token após fazer login
+# Defina o token apï¿½s fazer login
 export TOKEN="seu_token_aqui"
 export BASE_URL="https://localhost:7102/api"
 ```
 
 ---
 
-## ?? Autenticação
+## ?? Autenticaï¿½ï¿½o
 
-### Usuários disponíveis para teste
+### Usuï¿½rios disponï¿½veis para teste
 
 | Tipo | Nome | CPF | Email | Senha |
 |------|------|-----|-------|-------|
@@ -46,7 +46,7 @@ export BASE_URL="https://localhost:7102/api"
 | Professor | Renato Oliveira (Avaliador) | 34824360064 | renato@siseus.com | Senha@123 |
 
 ### 1. Login
-
+536006
 **Endpoint:** `POST /api/authenticacoes/login`
 
 ```bash
@@ -75,7 +75,7 @@ curl -X POST "$BASE_URL/authenticacoes/login" \
   }'
 ```
 
-### 2. Registrar Novo Usuário
+### 2. Registrar Novo Usuï¿½rio
 
 **Endpoint:** `POST /api/authenticacoes/registrar`
 
@@ -91,7 +91,7 @@ curl -X POST "$BASE_URL/authenticacoes/registrar" \
   }'
 ```
 
-### 3. Buscar Usuários por Nome
+### 3. Buscar Usuï¿½rios por Nome
 
 **Endpoint:** `GET /api/authenticacoes/buscar?nome={nome}`
 
@@ -100,7 +100,7 @@ curl -X GET "$BASE_URL/authenticacoes/buscar?nome=Carlos" \
   -H "Authorization: Bearer $TOKEN"
 ```
 
-### 4. Buscar Usuário por ID
+### 4. Buscar Usuï¿½rio por ID
 
 **Endpoint:** `GET /api/authenticacoes/{id}`
 
@@ -116,7 +116,7 @@ curl -X GET "$BASE_URL/authenticacoes/1" \
 ### 5. Criar Evento
 
 **Endpoint:** `POST /api/eventos`
-**Permissões:** Admin, Professor
+**Permissï¿½es:** Admin, Professor
 
 ```bash
 curl -X POST "$BASE_URL/eventos" \
@@ -140,8 +140,8 @@ curl -X POST "$BASE_URL/eventos" \
       {
         "id": null,
         "eventoId": 0,
-        "titulo": "Introdução ao .NET 8",
-        "nomeAutor": "João Silva",
+        "titulo": "Introduï¿½ï¿½o ao .NET 8",
+        "nomeAutor": "Joï¿½o Silva",
         "nomeOrientador": "Maria Santos",
         "modalidade": 1
       }
@@ -167,7 +167,7 @@ curl -X GET "$BASE_URL/eventos/1" \
   -H "Authorization: Bearer $TOKEN"
 ```
 
-### 8. Obter Evento por Código
+### 8. Obter Evento por Cï¿½digo
 
 **Endpoint:** `GET /api/eventos/por-codigo?codigo={codigo}`
 
@@ -179,7 +179,7 @@ curl -X GET "$BASE_URL/eventos/por-codigo?codigo=I1HGF9" \
 ### 9. Atualizar Evento
 
 **Endpoint:** `PUT /api/eventos/{id}`
-**Permissões:** Admin, Professor
+**Permissï¿½es:** Admin, Professor
 
 ```bash
 curl -X PUT "$BASE_URL/eventos/1" \
@@ -207,7 +207,7 @@ curl -X PUT "$BASE_URL/eventos/1" \
 ### 10. Excluir Evento
 
 **Endpoint:** `DELETE /api/eventos/{id}`
-**Permissões:** Admin
+**Permissï¿½es:** Admin
 
 ```bash
 curl -X DELETE "$BASE_URL/eventos/3" \
@@ -217,7 +217,7 @@ curl -X DELETE "$BASE_URL/eventos/3" \
 ### 11. Adicionar Participante
 
 **Endpoint:** `POST /api/eventos/{eventoId}/participantes`
-**Permissões:** Admin, Professor
+**Permissï¿½es:** Admin, Professor
 
 ```bash
 curl -X POST "$BASE_URL/eventos/1/participantes" \
@@ -229,7 +229,7 @@ curl -X POST "$BASE_URL/eventos/1/participantes" \
 ### 12. Remover Participante
 
 **Endpoint:** `DELETE /api/eventos/{eventoId}/participantes/{participanteId}`
-**Permissões:** Admin, Professor
+**Permissï¿½es:** Admin, Professor
 
 ```bash
 curl -X DELETE "$BASE_URL/eventos/1/participantes/5" \
@@ -239,7 +239,7 @@ curl -X DELETE "$BASE_URL/eventos/1/participantes/5" \
 ### 13. Adicionar Avaliador
 
 **Endpoint:** `POST /api/eventos/{eventoId}/avaliadores`
-**Permissões:** Admin, Professor
+**Permissï¿½es:** Admin, Professor
 
 ```bash
 curl -X POST "$BASE_URL/eventos/1/avaliadores" \
@@ -251,7 +251,7 @@ curl -X POST "$BASE_URL/eventos/1/avaliadores" \
 ### 14. Remover Avaliador
 
 **Endpoint:** `DELETE /api/eventos/{eventoId}/avaliadores/{avaliadorId}`
-**Permissões:** Admin, Professor
+**Permissï¿½es:** Admin, Professor
 
 ```bash
 curl -X DELETE "$BASE_URL/eventos/1/avaliadores/7" \
@@ -260,12 +260,12 @@ curl -X DELETE "$BASE_URL/eventos/1/avaliadores/7" \
 
 ---
 
-## ?? Apresentações
+## ?? Apresentaï¿½ï¿½es
 
-### 15. Criar Apresentação
+### 15. Criar Apresentaï¿½ï¿½o
 
 **Endpoint:** `POST /api/apresentacoes/{eventoId}`
-**Permissões:** Admin, Professor
+**Permissï¿½es:** Admin, Professor
 
 ```bash
 curl -X POST "$BASE_URL/apresentacoes/1" \
@@ -281,7 +281,7 @@ curl -X POST "$BASE_URL/apresentacoes/1" \
   }'
 ```
 
-### 16. Listar Apresentações de um Evento
+### 16. Listar Apresentaï¿½ï¿½es de um Evento
 
 **Endpoint:** `GET /api/apresentacoes/evento/{eventoId}`
 
@@ -290,7 +290,7 @@ curl -X GET "$BASE_URL/apresentacoes/evento/1" \
   -H "Authorization: Bearer $TOKEN"
 ```
 
-### 17. Obter Apresentação por ID
+### 17. Obter Apresentaï¿½ï¿½o por ID
 
 **Endpoint:** `GET /api/apresentacoes/{id}`
 
@@ -299,10 +299,10 @@ curl -X GET "$BASE_URL/apresentacoes/1" \
   -H "Authorization: Bearer $TOKEN"
 ```
 
-### 18. Atualizar Apresentação
+### 18. Atualizar Apresentaï¿½ï¿½o
 
 **Endpoint:** `PUT /api/apresentacoes/{id}`
-**Permissões:** Admin, Professor
+**Permissï¿½es:** Admin, Professor
 
 ```bash
 curl -X PUT "$BASE_URL/apresentacoes/1" \
@@ -310,16 +310,16 @@ curl -X PUT "$BASE_URL/apresentacoes/1" \
   -H "Authorization: Bearer $TOKEN" \
   -d '{
     "id": 1,
-    "titulo": "IA Generativa - Versão Revisada",
+    "titulo": "IA Generativa - Versï¿½o Revisada",
     "nomeAutor": "Ana Silva",
     "nomeOrientador": "Prof. Carlos Souza"
   }'
 ```
 
-### 19. Excluir Apresentação
+### 19. Excluir Apresentaï¿½ï¿½o
 
 **Endpoint:** `DELETE /api/apresentacoes/{id}`
-**Permissões:** Admin
+**Permissï¿½es:** Admin
 
 ```bash
 curl -X DELETE "$BASE_URL/apresentacoes/4" \
@@ -328,7 +328,7 @@ curl -X DELETE "$BASE_URL/apresentacoes/4" \
 
 ---
 
-## ? Presenças
+## ? Presenï¿½as
 
 ### 20. Efetuar Check-In
 
@@ -360,7 +360,7 @@ curl -X POST "$BASE_URL/presencas/check-out" \
   }'
 ```
 
-### 22. Obter Presença por ID
+### 22. Obter Presenï¿½a por ID
 
 **Endpoint:** `GET /api/presencas/{id}`
 
@@ -369,27 +369,27 @@ curl -X GET "$BASE_URL/presencas/1" \
   -H "Authorization: Bearer $TOKEN"
 ```
 
-### 23. Listar Presenças por Evento
+### 23. Listar Presenï¿½as por Evento
 
 **Endpoint:** `GET /api/presencas/evento/{eventoId}`
-**Permissões:** Admin, Professor, Avaliador
+**Permissï¿½es:** Admin, Professor, Avaliador
 
 ```bash
 curl -X GET "$BASE_URL/presencas/evento/1" \
   -H "Authorization: Bearer $TOKEN"
 ```
 
-### 24. Relatório de Presenças
+### 24. Relatï¿½rio de Presenï¿½as
 
 **Endpoint:** `GET /api/presencas/relatorio`
-**Permissões:** Admin, Professor
+**Permissï¿½es:** Admin, Professor
 
 ```bash
 curl -X GET "$BASE_URL/presencas/relatorio" \
   -H "Authorization: Bearer $TOKEN"
 ```
 
-### 25. Status de Presença em Evento
+### 25. Status de Presenï¿½a em Evento
 
 **Endpoint:** `GET /api/presencas/status/evento/{eventoId}`
 
@@ -398,7 +398,7 @@ curl -X GET "$BASE_URL/presencas/status/evento/1" \
   -H "Authorization: Bearer $TOKEN"
 ```
 
-### 26. Verificar Presença em Evento em Andamento
+### 26. Verificar Presenï¿½a em Evento em Andamento
 
 **Endpoint:** `GET /api/presencas/evento-em-andamento`
 
@@ -423,7 +423,7 @@ curl -X GET "$BASE_URL/checkin/pin-ativo" \
 ### 28. Gerar Novo PIN
 
 **Endpoint:** `POST /api/checkin/pin`
-**Permissões:** Admin
+**Permissï¿½es:** Admin
 
 ```bash
 curl -X POST "$BASE_URL/checkin/pin" \
@@ -471,10 +471,10 @@ curl -X POST "$BASE_URL/checkin/checkout" \
   }'
 ```
 
-### 32. Relatório de Check-ins
+### 32. Relatï¿½rio de Check-ins
 
 **Endpoint:** `GET /api/checkin/relatorio`
-**Permissões:** Admin, Professor
+**Permissï¿½es:** Admin, Professor
 
 ```bash
 curl -X GET "$BASE_URL/checkin/relatorio" \
@@ -483,12 +483,12 @@ curl -X GET "$BASE_URL/checkin/relatorio" \
 
 ---
 
-## ? Avaliações
+## ? Avaliaï¿½ï¿½es
 
-### 33. Iniciar Avaliação
+### 33. Iniciar Avaliaï¿½ï¿½o
 
 **Endpoint:** `POST /api/avaliacoes/iniciar`
-**Permissões:** Avaliador, Professor, Admin
+**Permissï¿½es:** Avaliador, Professor, Admin
 
 ```bash
 curl -X POST "$BASE_URL/avaliacoes/iniciar" \
@@ -499,10 +499,10 @@ curl -X POST "$BASE_URL/avaliacoes/iniciar" \
   }'
 ```
 
-### 34. Enviar Avaliação
+### 34. Enviar Avaliaï¿½ï¿½o
 
 **Endpoint:** `POST /api/avaliacoes/{id}/enviar`
-**Permissões:** Avaliador, Professor, Admin
+**Permissï¿½es:** Avaliador, Professor, Admin
 
 ```bash
 curl -X POST "$BASE_URL/avaliacoes/1/enviar" \
@@ -510,64 +510,64 @@ curl -X POST "$BASE_URL/avaliacoes/1/enviar" \
   -H "Authorization: Bearer $TOKEN" \
   -d '{
     "nota": 8.5,
-    "parecer": "Excelente apresentação! Conteúdo bem estruturado e boa didática."
+    "parecer": "Excelente apresentaï¿½ï¿½o! Conteï¿½do bem estruturado e boa didï¿½tica."
   }'
 ```
 
-### 35. Obter Avaliação por ID
+### 35. Obter Avaliaï¿½ï¿½o por ID
 
 **Endpoint:** `GET /api/avaliacoes/{id}`
-**Permissões:** Avaliador, Professor, Admin
+**Permissï¿½es:** Avaliador, Professor, Admin
 
 ```bash
 curl -X GET "$BASE_URL/avaliacoes/1" \
   -H "Authorization: Bearer $TOKEN"
 ```
 
-### 36. Listar Avaliações de uma Apresentação
+### 36. Listar Avaliaï¿½ï¿½es de uma Apresentaï¿½ï¿½o
 
 **Endpoint:** `GET /api/avaliacoes/apresentacao/{apresentacaoId}`
-**Permissões:** Avaliador, Professor, Admin
+**Permissï¿½es:** Avaliador, Professor, Admin
 
 ```bash
 curl -X GET "$BASE_URL/avaliacoes/apresentacao/1" \
   -H "Authorization: Bearer $TOKEN"
 ```
 
-### 37. Listar Minhas Avaliações
+### 37. Listar Minhas Avaliaï¿½ï¿½es
 
 **Endpoint:** `GET /api/avaliacoes/minhas`
-**Permissões:** Avaliador, Professor, Admin
+**Permissï¿½es:** Avaliador, Professor, Admin
 
 ```bash
 curl -X GET "$BASE_URL/avaliacoes/minhas" \
   -H "Authorization: Bearer $TOKEN"
 ```
 
-### 38. Listar Avaliações de um Evento
+### 38. Listar Avaliaï¿½ï¿½es de um Evento
 
 **Endpoint:** `GET /api/avaliacoes/evento/{eventoId}`
-**Permissões:** Professor, Admin
+**Permissï¿½es:** Professor, Admin
 
 ```bash
 curl -X GET "$BASE_URL/avaliacoes/evento/1" \
   -H "Authorization: Bearer $TOKEN"
 ```
 
-### 39. Relatório de Apresentação
+### 39. Relatï¿½rio de Apresentaï¿½ï¿½o
 
 **Endpoint:** `GET /api/avaliacoes/relatorio/apresentacao/{apresentacaoId}`
-**Permissões:** Professor, Admin
+**Permissï¿½es:** Professor, Admin
 
 ```bash
 curl -X GET "$BASE_URL/avaliacoes/relatorio/apresentacao/1" \
   -H "Authorization: Bearer $TOKEN"
 ```
 
-### 40. Relatório de Evento
+### 40. Relatï¿½rio de Evento
 
 **Endpoint:** `GET /api/avaliacoes/relatorio/evento/{eventoId}`
-**Permissões:** Professor, Admin
+**Permissï¿½es:** Professor, Admin
 
 ```bash
 curl -X GET "$BASE_URL/avaliacoes/relatorio/evento/1" \
@@ -576,9 +576,9 @@ curl -X GET "$BASE_URL/avaliacoes/relatorio/evento/1" \
 
 ---
 
-## ?? Dados de Referência
+## ?? Dados de Referï¿½ncia
 
-### Enumerações
+### Enumeraï¿½ï¿½es
 
 #### Campus
 | Valor | Nome |
@@ -610,22 +610,22 @@ curl -X GET "$BASE_URL/avaliacoes/relatorio/evento/1" \
 | 3 | Avaliador |
 | 4 | Admin |
 
-### Eventos Pré-cadastrados
+### Eventos Prï¿½-cadastrados
 
-| ID | Título | Código | Data Início |
+| ID | Tï¿½tulo | Cï¿½digo | Data Inï¿½cio |
 |----|--------|--------|-------------|
-| 1 | A Jornada da Inteligência Artificial | I1HGF9 | 2026-01-20 09:00 |
+| 1 | A Jornada da Inteligï¿½ncia Artificial | I1HGF9 | 2026-01-20 09:00 |
 | 2 | Descomplicando o Front-End Moderno | 7L5B3E | 2026-01-21 10:30 |
 
-### Apresentações Pré-cadastradas
+### Apresentaï¿½ï¿½es Prï¿½-cadastradas
 
-| ID | EventoId | Título | Autor | Modalidade |
+| ID | EventoId | Tï¿½tulo | Autor | Modalidade |
 |----|----------|--------|-------|------------|
 | 1 | 1 | IA Generativa | Ana | Oral |
 | 2 | 1 | Redes Neurais | Bruno | Artistica |
 | 3 | 2 | React vs Vue | Carla | Oral |
 
-### Coordenadas de Teste (Crateús-CE)
+### Coordenadas de Teste (Crateï¿½s-CE)
 
 ```json
 {
@@ -638,8 +638,8 @@ curl -X GET "$BASE_URL/avaliacoes/relatorio/evento/1" \
 
 ## ?? Dicas de Teste
 
-1. **Sempre faça login primeiro** e salve o token retornado
+1. **Sempre faï¿½a login primeiro** e salve o token retornado
 2. **Use Admin** para ter acesso a todos os endpoints
-3. **Verifique as permissões** de cada endpoint antes de testar
-4. **O PIN é gerado aleatoriamente** - obtenha-o pelo endpoint `/checkin/pin-ativo`
-5. **As datas dos eventos seed são futuras** (2026) - ajuste se necessário
+3. **Verifique as permissï¿½es** de cada endpoint antes de testar
+4. **O PIN ï¿½ gerado aleatoriamente** - obtenha-o pelo endpoint `/checkin/pin-ativo`
+5. **As datas dos eventos seed sï¿½o futuras** (2026) - ajuste se necessï¿½rio

@@ -22,6 +22,12 @@ namespace SisEUs.Infrastructure.Repositorios
                 .FirstOrDefaultAsync(p => p.IsAtivo);
         }
 
+        public async Task<CheckinPin?> ObterPinPorValorAtivoAsync(string pin)
+        {
+            return await context.CheckinPins
+                .FirstOrDefaultAsync(p => p.Pin == pin && p.IsAtivo);
+        }
+
         public async Task<IEnumerable<CheckinPin>> ObterTodosPinsAsync()
         {
             return await context.CheckinPins.AsNoTracking().ToListAsync();

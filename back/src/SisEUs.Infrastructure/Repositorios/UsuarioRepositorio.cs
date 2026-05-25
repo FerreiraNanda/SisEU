@@ -82,7 +82,7 @@ namespace SisEUs.Infrastructure.Repositorios
             return await _context.Usuarios.AsNoTracking().ToListAsync();
         }
         
-        public async Task<Usuario?> ObterPorUserIdentifierAsync(Guid userIdentifier, CancellationToken cancellationToken = default)
+       public async Task<Usuario?> ObterPorUserIdentifierAsync(Guid userIdentifier, CancellationToken cancellationToken = default)
         {
             return await _context.Usuarios
                 .FirstOrDefaultAsync(u => u.UserIdentifier == userIdentifier, cancellationToken);

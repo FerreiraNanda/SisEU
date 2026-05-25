@@ -14,7 +14,7 @@ namespace SisEUs.API.Controllers
     public class CheckinController(IPinService pinService) : BaseController
     {
         /// <summary>
-        /// ObtÈm o PIN ativo atual para check-in
+        /// Obt√©m o PIN ativo atual para check-in
         /// </summary>
         /// <returns>PIN ativo</returns>
         [HttpGet("pin-ativo")]
@@ -49,10 +49,10 @@ namespace SisEUs.API.Controllers
         }
 
         /// <summary>
-        /// Valida se um PIN est· ativo e correto
+        /// Valida se um PIN est√° ativo e correto (Passo 1 do Frontend)
         /// </summary>
         /// <param name="request">PIN a ser validado</param>
-        /// <returns>Sem conte˙do se v·lido</returns>
+        /// <returns>Sem conte√∫do se v√°lido</returns>
         [HttpPost("validar-pin")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -63,10 +63,10 @@ namespace SisEUs.API.Controllers
         }
 
         /// <summary>
-        /// Registra o check-in do usu·rio com PIN e localizaÁ„o
+        /// Registra o check-in do usu√°rio com PIN e localiza√ß√£o (Passo 2 do Frontend)
         /// </summary>
-        /// <param name="request">PIN e coordenadas de localizaÁ„o</param>
-        /// <returns>ConfirmaÁ„o de check-in registrado</returns>
+        /// <param name="request">PIN e coordenadas de localiza√ß√£o</param>
+        /// <returns>Confirma√ß√£o de check-in registrado</returns>
         [HttpPost("registrar")]
         [AuthenticatedUser]
         [ProducesResponseType(StatusCodes.Status201Created)]
@@ -89,10 +89,10 @@ namespace SisEUs.API.Controllers
         }
 
         /// <summary>
-        /// Registra o check-out do usu·rio com localizaÁ„o
+        /// Registra o check-out do usu√°rio com localiza√ß√£o
         /// </summary>
-        /// <param name="request">Coordenadas de localizaÁ„o</param>
-        /// <returns>ConfirmaÁ„o de check-out registrado</returns>
+        /// <param name="request">Coordenadas de localiza√ß√£o</param>
+        /// <returns>Confirma√ß√£o de check-out registrado</returns>
         [HttpPost("checkout")]
         [AuthenticatedUser]
         [ProducesResponseType(StatusCodes.Status200OK)]
@@ -100,7 +100,6 @@ namespace SisEUs.API.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> RegistrarCheckOut([FromBody] RegistrarCheckoutSolicitacao request)
         {
-
             var resultado = await pinService.RegistrarCheckOutAsync(
                 request.Latitude,
                 request.Longitude
@@ -115,9 +114,9 @@ namespace SisEUs.API.Controllers
         }
 
         /// <summary>
-        /// ObtÈm o relatÛrio completo de todos os check-ins e check-outs
+        /// Obt√©m o relat√≥rio completo de todos os check-ins e check-outs
         /// </summary>
-        /// <returns>RelatÛrio de check-ins</returns>
+        /// <returns>Relat√≥rio de check-ins</returns>
         [HttpGet("relatorio")]
         [AuthenticatedUser]
         [ProducesResponseType(typeof(IEnumerable<RelatorioCheckinResposta>), StatusCodes.Status200OK)]

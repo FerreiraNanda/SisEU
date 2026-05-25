@@ -66,11 +66,12 @@ namespace SisEUs.Application.Checkin
             ));
         }
 
-        public async Task<Resultado> ValidarApenasPinAsync(string pin)
-        {
-            var pinAtivo = await repositorio.ObterPinAtivoAsync();
+       public async Task<Resultado> ValidarApenasPinAsync(string pin)
+{
+    // Substituímos a chamada velha pela nova, passando a variável 'pin'
+            var pinAtivo = await repositorio.ObterPinPorValorAtivoAsync(pin);
 
-            if (pinAtivo == null || pinAtivo.Pin != pin || !pinAtivo.IsAtivo)
+            if (pinAtivo == null)
             {
                 return Resultado.Falha(TipoDeErro.Validacao, "PIN inválido ou expirado.");
             }
@@ -79,48 +80,55 @@ namespace SisEUs.Application.Checkin
         }
 
         public async Task<Resultado> ValidarCheckinCompletoAsync(string pin, string latitude, string longitude)
-        {
-            var usuarioAtual = await loggedUser.User();
+{
+    var usuarioAtual = await loggedUser.User();
 
-            // Validar e converter coordenadas usando o serviço centralizado
-            var resultadoCoordenadas = validadorDeCoordenadas.TryConverterCoordenadas(latitude, longitude, out double latDouble, out double lonDouble);
-            if (!resultadoCoordenadas.Sucesso)
-            {
-                return resultadoCoordenadas;
-            }
+    // Validar e converter coordenadas usando o serviço centralizado
+    var resultadoCoordenadas = validadorDeCoordenadas.TryConverterCoordenadas(latitude, longitude, out double latDouble, out double lonDouble);
+    if (!resultadoCoordenadas.Sucesso)
+    {
+        return resultadoCoordenadas;
+    }
 
-            // Validar se está em algum campus
-            var resultadoCampus = validadorDeCoordenadas.ValidarLocalizacaoCampus(latDouble, lonDouble);
-            if (!resultadoCampus.Sucesso)
-            {
-                return Resultado.Falha(TipoDeErro.Validacao, "Falha no check-in: " + resultadoCampus.Erros.First());
-            }
+    // Validar se está em algum campus
+    var resultadoCampus = validadorDeCoordenadas.ValidarLocalizacaoCampus(latDouble, lonDouble);
+    if (!resultadoCampus.Sucesso)
+    {
+        return Resultado.Falha(TipoDeErro.Validacao, "Falha no check-in: " + resultadoCampus.Erros.First());
+    }
 
-            var pinAtivo = await repositorio.ObterPinAtivoAsync();
+    // Busca exatamente o PIN digitado, e não apenas o "primeiro ativo"
+    var pinAtivo = await repositorio.ObterPinPorValorAtivoAsync(pin);
 
-            if (pinAtivo == null || pinAtivo.Pin != pin || !pinAtivo.IsAtivo)
-            {
-                return Resultado.Falha(TipoDeErro.Validacao, "Falha no check-in: PIN inválido ou expirado.");
-            }
+    // Como a query já filtra por Pin e IsAtivo, basta verificar se é nulo
+    if (pinAtivo == null)
+    {
+        return Resultado.Falha(TipoDeErro.Validacao, "Falha no check-in: PIN inválido ou expirado.");
+    }
+  
+   var checkinAberto = await checkinRepositorio.ObterCheckinAbertoAsync(usuarioAtual.Id);
+    if (checkinAberto != null)
+    {
+        return Resultado.Falha(TipoDeErro.Validacao, "Você já registrou o Check-in. Por favor, faça o Check-out.");
+    }
 
-            var checkinAberto = await checkinRepositorio.ObterCheckinAbertoAsync(usuarioAtual.Id);
+    var novoCheckin = EntidadeCheckin.Criar(
+        usuarioAtual.Id,
+        pinAtivo.Id,
+        latDouble,
+        lonDouble
+    );
+    checkinRepositorio.Adicionar(novoCheckin);
+    await uow.CommitAsync();
 
-            if (checkinAberto != null)
-            {
-                return Resultado.Falha(TipoDeErro.Validacao, "Você já registrou o Check-in. Por favor, faça o Check-out.");
-            }
-
-            var novoCheckin = EntidadeCheckin.Criar(usuarioAtual.Id, pinAtivo.Id, latDouble, lonDouble);
-
-            checkinRepositorio.Adicionar(novoCheckin);
-            await uow.CommitAsync();
-
-            return Resultado.Ok();
-        }
+    return Resultado.Ok();
+}
 
         public async Task<Resultado> RegistrarCheckOutAsync(string latitude, string longitude)
         {
             var usuarioAtual = await loggedUser.User();
+            Console.WriteLine($"DEBUG: Procurando check-in aberto para UserID: {usuarioAtual.Id}");
+            Console.WriteLine($"DEBUG: Usuário autenticado ID={usuarioAtual.Id}");
 
             // Validar e converter coordenadas usando o serviço centralizado
             var resultadoCoordenadas = validadorDeCoordenadas.TryConverterCoordenadas(latitude, longitude, out double latDouble, out double lonDouble);
@@ -136,11 +144,11 @@ namespace SisEUs.Application.Checkin
                 return Resultado.Falha(TipoDeErro.Validacao, "Você não está na área permitida para Check-out.");
             }
 
-            var checkinAberto = await checkinRepositorio.ObterCheckinAbertoAsync(usuarioAtual.Id);
-
+          var checkinAberto = await checkinRepositorio.ObterCheckinAbertoAsync(usuarioAtual.Id);
             if (checkinAberto == null)
             {
-                return Resultado.Falha(TipoDeErro.NaoEncontrado, "Nenhum Check-in aberto encontrado para fazer o Check-out.");
+                Console.WriteLine("DEBUG: NENHUM CHECK-IN ENCONTRADO NO BANCO PARA ESTE USUÁRIO!");
+                return Resultado.Falha(TipoDeErro.NaoEncontrado, "Nenhum Check-in aberto encontrado.");
             }
 
             checkinAberto.RegistrarCheckOut();

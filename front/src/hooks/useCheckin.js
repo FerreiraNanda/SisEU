@@ -59,22 +59,16 @@ export const useCheckin = () => {
     setError(null);
 
     try {
-      // 1. Valida PIN
-      const validacao = await checkinService.validarPin(pin);
-      if (!validacao.valid) {
-        throw new Error('PIN inválido');
-      }
-
-      // 2. Obtém geolocalização
+      // 1. Obtém geolocalização direto
       const posicao = await geolocationService.getCurrentPosition();
 
-      // 3. Registra check-in
+      // 2. Registra check-in (A rota /registrar do backend já faz a validação final do PIN)
       const checkin = await checkinService.registrarCheckin({
-        eventoId: eventoId || validacao.eventoId,
-        sessaoId: sessaoId || validacao.sessaoId,
-        pin,
-        latitude: posicao.latitude,
-        longitude: posicao.longitude,
+        eventoId: eventoId, 
+        sessaoId: sessaoId,
+        pin: pin,
+        latitude: posicao.latitude.toString(),  
+        longitude: posicao.longitude.toString(),
         tipoParticipacao,
       });
 
@@ -100,16 +94,13 @@ export const useCheckin = () => {
         throw new Error('Nenhum check-in ativo encontrado');
       }
 
-      // 1. Valida PIN
-      await checkinService.validarPin(pin);
-
-      // 2. Obtém geolocalização
+      // 1. Obtém geolocalização direto
       const posicao = await geolocationService.getCurrentPosition();
 
-      // 3. Registra checkout
+      // 2. Registra checkout
       const checkout = await checkinService.registrarCheckout({
         checkinId: checkinAtivo.id,
-        pin,
+        pin: pin,
         latitude: posicao.latitude,
         longitude: posicao.longitude,
       });
